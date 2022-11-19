@@ -21,8 +21,8 @@ app = FastAPI()
 # DB of web URLs that users report as fake
 
 logger.info("Loading DB...")
-#deta = Deta('')
-claims_db = Base("claims-db")
+deta = Deta(os.environ['DETA_KEY'])
+claims_db = deta.Base("claims-db")
 
 #
 # Cohere connection
@@ -43,7 +43,6 @@ search_index.load('claims.ann')
 #
 # Endpoints
 #
-
 
 @app.get("/health")
 def health_check():

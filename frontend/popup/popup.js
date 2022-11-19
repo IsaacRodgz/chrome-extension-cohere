@@ -5,7 +5,7 @@ function report_db() {
         console.log(activeTab.url)
 
         // Send info to backend API
-        fetch('https://verifai.deta.dev/report', {
+        fetch('https://verifai-cohere.ue.r.appspot.com/report', {
             method: 'POST',
             body: JSON.stringify({
                 site_name: activeTab.title,
@@ -61,7 +61,7 @@ function get_context() {
         container.appendChild(loader);
 
         // Send info to backend API
-        return await fetch('https://verifai.deta.dev/verify', {
+        return await fetch('https://verifai-cohere.ue.r.appspot.com/verify', {
             method: 'POST',
             body: JSON.stringify({
                 url: activeTab.url,
@@ -109,8 +109,22 @@ function get_context() {
             report.appendChild(report_row);
 
             // Show Cohere result
+            if(data.found_claims.length > 0){
+                let report_title = document.createElement("h4");
+                report_title.innerText = "Detected claims:";
+                report.appendChild(report_title);
 
-            // TODO
+                data.found_claims.forEach(function (item, index) {
+                    report_row = create_item(item.predicted_category, item.claim_text);
+                    report.appendChild(report_row);
+                });
+            }
+            else {
+                let report_title = document.createElement("h4");
+                report_title.innerText = "No claim detected in our database";
+                report.appendChild(report_title);
+            }
+
         })
         .catch(() => console.log("Oops! Error while making request"));
     });

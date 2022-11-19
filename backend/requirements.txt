@@ -1,0 +1,6 @@
+fastapi
+deta
+jsonformatter
+newspaper3k
+cohere
+annoy

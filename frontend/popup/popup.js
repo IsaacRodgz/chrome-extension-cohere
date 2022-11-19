@@ -72,6 +72,7 @@ function get_context() {
         })
         .then((response) => response.json())
         .then((data) => {
+
             // Disable button
             const button = document.getElementById('context-button');
             button.setAttribute('disabled', '');
@@ -126,7 +127,7 @@ function get_context() {
             }
 
         })
-        .catch(() => console.log("Oops! Error while making request"));
+        .catch((error) => console.log(`Oops! Error while making request: ${error.message}`));
     });
 }
 

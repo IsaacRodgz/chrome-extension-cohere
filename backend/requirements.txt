@@ -4,3 +4,6 @@ jsonformatter
 newspaper3k
 cohere
 annoy
+fastapi
+uvicorn
+gunicorn

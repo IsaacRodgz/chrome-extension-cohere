@@ -30,6 +30,7 @@ claims_db = deta.Base("claims-db")
 
 logger.info("Connecting to Cohere")
 co = cohere.Client(os.environ['API_KEY'])
+co_gen = cohere.Client(os.environ['API_KEY_GEN'])
 
 #
 # Load Annoy embedding DB
@@ -64,7 +65,7 @@ def verify(item: ContextInput):
         report_item, article_text = parse_website(item.url)
         logger.info(f"items found in url: {report_item}. Article text: {article_text}")
 
-        claims = get_claims_form_text(article_text)
+        claims = get_claims_form_text(logger, co_gen, article_text, report_item)
         logger.info(f'Claims detected: {claims}')
 
         if len(claims) > 0:
@@ -91,3 +92,24 @@ def verify(item: ContextInput):
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
     return report_item
+
+"""
+            data = {
+                "authors": [
+                    "November"
+                ],
+                "published_date": "04/11/2022",
+                "found_claims": [
+                    {
+                        'predicted_category': 'FALSE',
+                        'found': true,
+                        'claim_text': 'This is claim 1',
+                    },
+                    {
+                        'predicted_category': 'FALSE',
+                        'found': true,
+                        'claim_text': 'This is claim 2',
+                    }
+                ]
+            }
+"""

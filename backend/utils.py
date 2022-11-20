@@ -35,7 +35,8 @@ def parse_website(url: str):
     """
     article_report = {
         'authors': None,
-        'published_date': None
+        'published_date': None,
+        'article_title': None
     }
     article = Article(url, language='en')
     article.download()
@@ -46,18 +47,28 @@ def parse_website(url: str):
     
     article_report['authors'] = article.authors
     article_report['published_date'] = article.publish_date.strftime('%d/%m/%Y')
+    article_report['article_title'] = article.title
     return article_report, article.text
 
 #
 # Cohere logic to identify, search and verify claims
 #
 
-def get_claims_form_text(article_text: str):
+def get_claims_form_text(logger, co: cohere.client.Client, article_text: str, article_info: dict):
     """
     Get claims from HTML text
     """
-    claims = [claim for claim in article_text.strip().split("\n") if len(claim)>0]
-    return claims
+    #claims = [claim for claim in article_text.strip().split("\n") if len(claim)>0]
+    #return claims
+    full_text = 'Article: ' + article_info['article_title'] + ' ' + article_text[:5000]  + '\n'*2 + 'Claim: '
+    try:
+        response = co.generate(
+            model='66a925fa-41b6-4495-a8ee-54c59fb2b7a2-ft',
+            prompt=full_text
+        )
+    except Exception as e:
+        logger.info(f"Error: {str(e)}")
+    return [response.generations[0].text]
 
 def get_claim_embeddings(co: cohere.client.Client, claims: List[str]):
     return co.embed(

@@ -11,3 +11,4 @@ class ContextResponse(BaseModel):
     authors: list = None
     published_date: str = None
     found_claims: list = None
+    article_title: str = None

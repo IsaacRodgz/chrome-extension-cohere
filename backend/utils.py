@@ -63,7 +63,7 @@ def get_claims_form_text(logger, co: cohere.client.Client, article_text: str, ar
     full_text = 'Article: ' + article_info['article_title'] + ' ' + article_text[:5000]  + '\n'*2 + 'Claim: '
     try:
         response = co.generate(
-            model='66a925fa-41b6-4495-a8ee-54c59fb2b7a2-ft',
+            model='aa42cd3e-3154-4904-9c79-f2cbea2a3c74-ft',
             prompt=full_text
         )
     except Exception as e:

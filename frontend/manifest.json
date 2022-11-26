@@ -25,5 +25,5 @@
         "48": "./assets/verifai.png",
         "128": "./assets/verifai.png"
 },
-    "permissions": ["storage", "tabs", "activeTab", "scripting"]
+    "permissions": ["tabs", "activeTab"]
 }
